@@ -42,9 +42,10 @@ jobs:
             echo "Response from API (page $page):"
             echo "$response" | jq .
             
-            # Check if the response contains an error message
-            if echo "$response" | jq -e '.message' > /dev/null; then
-              echo "Error: $(echo "$response" | jq -r '.message')"
+            # Check if the response is an error object (contains the "message" field)
+            if echo "$response" | jq -e 'has("message")' > /dev/null; then
+              error_message=$(echo "$response" | jq -r '.message')
+              echo "Error: $error_message"
               exit 1
             fi
 
