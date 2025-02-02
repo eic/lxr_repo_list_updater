@@ -64,18 +64,16 @@ jobs:
 
               # Check if there are no commits
               if [[ "$(echo "$commit_response" | jq length)" -eq 0 ]]; then
+                echo "No commits found for repository: $repo_name"
                 break
               fi
 
               # Check if the commit response is an array and has at least one commit
-              if echo "$commit_response" | jq -e 'type == "array" and length > 0' > /dev/null; then
-                last_commit_date=$(echo "$commit_response" | jq -r '.[0].commit.committer.date')
-                if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
-                  active_repos+=("$repo_name")
-                fi
-              else
-                echo "No commits found for repository: $repo_name"
+              last_commit_date=$(echo "$commit_response" | jq -r '.[0].commit.committer.date')
+              if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
+                active_repos+=("$repo_name")
               fi
+              
                         
             done
 
