@@ -1,9 +1,8 @@
-# Workflow to update the list of files in eic lxr
 name: Workflow to update the list of files in eic lxr
 
 on:
   schedule:
-    - cron:  '0 0 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
   pull_request:
 
@@ -15,7 +14,7 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       # Step 2: Set up dependencies (curl and jq)
       - name: Set up curl and jq
         run: |
@@ -39,6 +38,16 @@ jobs:
           while true; do
             response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL?page=$page&per_page=100")
             
+            # Debugging: Print the response to understand the structure
+            echo "Response from API (page $page):"
+            echo "$response" | jq .
+            
+            # Check if the response contains an error message
+            if echo "$response" | jq -e '.message' > /dev/null; then
+              echo "Error: $(echo "$response" | jq -r '.message')"
+              exit 1
+            fi
+
             # Check if there are no more repositories
             if [[ "$(echo "$response" | jq length)" -eq 0 ]]; then
               break
@@ -66,4 +75,3 @@ jobs:
           else
             echo "No active repositories found."
           fi
-
