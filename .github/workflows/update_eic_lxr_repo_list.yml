@@ -37,13 +37,6 @@ jobs:
 
           while true; do
             response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL?page=$page&per_page=100")
-                        
-            # Check if the response is an error object (contains the "message" field)
-            if echo "$response" | jq -e 'has("message")' > /dev/null; then
-              error_message=$(echo "$response" | jq -r '.message')
-              echo "Error: $error_message"
-              exit 1
-            fi
 
             # Check if there are no more repositories
             if [[ "$(echo "$response" | jq length)" -eq 0 ]]; then
@@ -54,13 +47,6 @@ jobs:
             echo "$response" | jq -r '.[].name' | while read repo_name; do
               commits_url="https://api.github.com/repos/$ORG_NAME/$repo_name/commits?per_page=1"
               commit_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$commits_url")
-
-              # Check if the response is an error object (contains the "message" field)
-              if echo "$commit_response" | jq -e 'has("message")' > /dev/null; then
-                error_message=$(echo "$commit_response" | jq -r '.message')
-                echo "Error: $error_message"
-                exit 1
-              fi
 
               # Check if there are no commits
               if [[ "$(echo "$commit_response" | jq length)" -eq 0 ]]; then
