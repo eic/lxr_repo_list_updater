@@ -84,6 +84,7 @@ jobs:
               fi      
             done
             echo ${#active_repos[@]} 
+            echo "Now changing from page $page to $((page+1))"
             page=$((page + 1))
           done
 
