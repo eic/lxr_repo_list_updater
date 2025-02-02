@@ -81,13 +81,9 @@ jobs:
                 else
                   echo "Unexpected response format for $repo_name."
                 fi
-              fi
-
-              echo $commit_response | jq .
-     
-                        
+              fi      
             done
-
+            echo ${#active_repos[@]} 
             page=$((page + 1))
           done
 
