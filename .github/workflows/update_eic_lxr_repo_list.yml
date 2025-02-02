@@ -70,8 +70,6 @@ jobs:
                   if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
                     echo "$repo_name" >> "$TEMP_FILE"  # Append to temp file
                     echo "Added $repo_name to active repositories"
-                    echo $repo_name
-                    echo ${#active_repos[@]}
                   fi
                 else
                   echo "No commits found for repository: $repo_name"
@@ -86,12 +84,9 @@ jobs:
                 fi
               fi      
             done
-            echo ${#active_repos[@]} 
             echo "Now changing from page $page to $((page+1))"
             page=$((page + 1))
           done
-
-          echo ${#active_repos[@]}
 
           if [[ -s "$TEMP_FILE" ]]; then
             active_repos=($(cat "$TEMP_FILE"))  # Read active repos into an array
