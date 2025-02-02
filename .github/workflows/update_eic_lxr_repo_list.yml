@@ -54,6 +54,8 @@ jobs:
                 break
               fi
 
+              echo $commit_response | jq .
+              
               # Check if the commit response is an array and has at least one commit
               last_commit_date=$(echo "$commit_response" | jq -r '.[0].commit.committer.date')
               if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
