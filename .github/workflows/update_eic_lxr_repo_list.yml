@@ -33,7 +33,9 @@ jobs:
           
           # Get list of repositories (with pagination)
           page=1
-          active_repos=()
+          TEMP_FILE="/tmp/active_repos.txt"  # Temp file to store active repo names
+          # Initialize the temp file
+          echo "" > "$TEMP_FILE"
 
           while true; do
             response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL?page=$page&per_page=100")
@@ -66,7 +68,8 @@ jobs:
                   echo $last_commit_date
                   echo $CUTOFF_DATE
                   if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
-                    active_repos+=("$repo_name")
+                    echo "$repo_name" >> "$TEMP_FILE"  # Append to temp file
+                    echo "Added $repo_name to active repositories"
                     echo $repo_name
                     echo ${#active_repos[@]}
                   fi
@@ -90,8 +93,8 @@ jobs:
 
           echo ${#active_repos[@]}
 
-          # Output the results
-          if [ ${#active_repos[@]} -gt 0 ]; then
+          if [[ -s "$TEMP_FILE" ]]; then
+            active_repos=($(cat "$TEMP_FILE"))  # Read active repos into an array
             echo "Repositories with commits in the last 6 months:"
             for repo in "${active_repos[@]}"; do
               echo "$repo"
@@ -99,3 +102,6 @@ jobs:
           else
             echo "No active repositories found."
           fi
+
+          # Clean up the temp file
+          rm -f "$TEMP_FILE"
