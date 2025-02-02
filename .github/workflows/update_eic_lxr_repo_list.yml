@@ -68,7 +68,7 @@ jobs:
                   if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
                     active_repos+=("$repo_name")
                     echo $repo_name
-                    echo $active_repos
+                    echo ${#active_repos[@]}
                   fi
                 else
                   echo "No commits found for repository: $repo_name"
@@ -91,7 +91,7 @@ jobs:
             page=$((page + 1))
           done
 
-          echo $active_repos
+          echo ${#active_repos[@]}
 
           # Output the results
           if [ ${#active_repos[@]} -gt 0 ]; then
