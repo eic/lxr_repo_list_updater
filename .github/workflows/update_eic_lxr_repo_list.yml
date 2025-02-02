@@ -57,8 +57,18 @@ jobs:
             # Loop through each repository to check the last commit date
             echo "$response" | jq -r '.[].name' | while read repo_name; do
               commits_url="https://api.github.com/repos/$ORG_NAME/$repo_name/commits?per_page=1"
-              last_commit_date=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$commits_url" | jq -r '.[0].commit.committer.date')
+              commit_response=$(curl -s -H "Authorization: token $REPO_TOKEN" "$commits_url"
 
+              # Check if the commit response is an array and has at least one commit
+              if echo "$commit_response" | jq -e 'type == "array" and length > 0' > /dev/null; then
+                last_commit_date=$(echo "$commit_response" | jq -r '.[0].commit.committer.date')
+                if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
+                  active_repos+=("$repo_name")
+                fi
+              else
+                echo "No commits found for repository: $repo_name"
+              fi
+                        
               if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
                 active_repos+=("$repo_name")
               fi
