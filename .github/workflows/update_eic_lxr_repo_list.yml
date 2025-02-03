@@ -5,6 +5,10 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
   pull_request:
+  
+env:
+  GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+  ORG_NAME: "eic"
 
 jobs:
   check_active_repos:
@@ -26,9 +30,6 @@ jobs:
       # Step 3: Run the shell script to check active repositories
       - name: Check Active Repositories
         id: check_active_repos
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-          ORG_NAME: "eic"
         run: |
           # Variables
           API_URL="https://api.github.com/orgs/$ORG_NAME/repos"
@@ -121,8 +122,6 @@ jobs:
           # Get tags for the repository
           tags_url="https://api.github.com/repos/$ORG_NAME/$repo_name/tags"
           tags_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$tags_url")
-
-          echo $tags_response
 
           # Check if the response is an array
           if echo "$tags_response" | jq -e 'type == "array"' > /dev/null; then
