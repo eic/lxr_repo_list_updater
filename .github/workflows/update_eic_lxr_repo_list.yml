@@ -7,8 +7,10 @@ on:
   pull_request:
 
 jobs:
-  check-active-repos:
+  check_active_repos:
     runs-on: ubuntu-latest
+    outputs:
+      active_repos: ${{ steps.check_active_repos.outputs.active_repos }}
 
     steps:
       # Step 1: Checkout the repository
@@ -90,37 +92,48 @@ jobs:
 
           if [[ -s "$TEMP_FILE" ]]; then
             active_repos=($(cat "$TEMP_FILE"))  # Read active repos into an array
-            echo "Repositories with commits in the last 6 months:"
-            # Loop through active repositories
-            for repo_name in "${active_repos[@]}"; do
-              echo "Checking repository: $repo_name"
 
-              # Get tags for the repository
-              tags_url="https://api.github.com/repos/$ORG_NAME/$repo_name/tags"
-              tags_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$tags_url")
+            # Convert array to JSON format for output
+            # Ensure quotes around campaign names
+            active_repos_json=$(printf ',"%s"' "${active_repos[@]}")
+            active_repos_json="[${active_repos_json:1}]"  # Remove leading comma
 
-              # Check if the response is an array
-              if echo "$tags_response" | jq -e 'type == "array"' > /dev/null; then
-                # Loop through each tag to extract the version
-                echo "$tags_response" | jq -r '.[].name' | while read tag; do
-                  # Check if any portion of the tag matches the CALVER or SEMVER pattern 
-                  if [[ "$tag" =~ [0-9]+\.[0-9]+ ]] || [[ "$tag" =~ v[0-9]+ ]]; then
-                    echo "https://github.com/$ORG_NAME/$repo_name==$tag" >> "$TEMP_V_FILE"
-                  else
-                    echo "Tag does not follow CALVER or SEMVER: $tag"
-                  fi
-                done
+            # Output campaigns as a JSON array
+            echo "active_repos=${active_repos_json}" >> $GITHUB_OUTPUT
+          fi 
+          
+  get_tag_list:
+    needs: check_active_repos
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo_name: ${{ fromJson(needs.check_active_repos.outputs.active_repos) }}
+    steps:
+      - name: Get tag list
+        id: get_tags_list
+        run: |
+          repo_name="{{ matrix.repo_name }}"  
+          TEMP_V_FILE="/tmp/${repo_name}.txt"
+          echo "Checking repository: $repo_name"
+
+          # Get tags for the repository
+          tags_url="https://api.github.com/repos/$ORG_NAME/$repo_name/tags"
+          tags_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$tags_url")
+
+          # Check if the response is an array
+          if echo "$tags_response" | jq -e 'type == "array"' > /dev/null; then
+            # Loop through each tag to extract the version
+            echo "$tags_response" | jq -r '.[].name' | while read tag; do
+              # Check if any portion of the tag matches the CALVER or SEMVER pattern 
+              if [[ "$tag" =~ [0-9]+\.[0-9]+ ]] || [[ "$tag" =~ v[0-9]+ ]]; then
+                echo "https://github.com/$ORG_NAME/$repo_name==$tag" >> "$TEMP_V_FILE"
               else
-                echo "No tags found for repository $repo_name or response format is incorrect."
+                echo "Tag does not follow CALVER or SEMVER: $tag"
               fi
             done
-
           else
-            echo "No active repositories found."
+            echo "No tags found for repository $repo_name or response format is incorrect."
           fi
-
+          
           cat "$TEMP_V_FILE"
-
-          # Clean up the temp file
-          rm -f "$TEMP_FILE"
           rm -f "$TEMP_V_FILE"
