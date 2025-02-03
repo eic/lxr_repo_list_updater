@@ -98,6 +98,7 @@ jobs:
             active_repos_json=$(printf ',"%s"' "${active_repos[@]}")
             active_repos_json="[${active_repos_json:1}]"  # Remove leading comma
 
+            echo $active_repos_json
             # Output campaigns as a JSON array
             echo "active_repos=${active_repos_json}" >> $GITHUB_OUTPUT
           fi 
