@@ -9,6 +9,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
   ORG_NAME: "eic"
+  SUPPLEMENTAL_REPOS: '["acts-project/acts","JeffersonLab/jana","JeffersonLab/DEMPgen"]'
 
 jobs:
   check_active_repos:
@@ -40,7 +41,15 @@ jobs:
           TEMP_FILE="/tmp/active_repos.txt"  # Temp file to store active repo names
           # Initialize the temp file
           echo "" > "$TEMP_FILE"
-         
+
+          # Parse the JSON array into an array
+          supplemental_repos=$(echo "$SUPPLEMENTAL_REPOS" | jq -r '.[]')
+
+          # Loop through each repository
+          for supplemental_repo_name in $supplemental_repos; do
+            echo "$supplemental_repo_name" >> "$TEMP_FILE"  # Append to temp file
+            echo "Added $supplemental_repo_name to active repositories"
+          done
 
           while true; do
             response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL?page=$page&per_page=100")
