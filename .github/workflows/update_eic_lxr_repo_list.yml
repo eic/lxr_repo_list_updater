@@ -9,7 +9,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
   ORG_NAME: "eic"
-  SUPPLEMENTAL_REPOS: '["acts-project:acts","JeffersonLab:jana","JeffersonLab:DEMPgen"]'
+  SUPPLEMENTAL_REPOS: '["acts-project_ORG_acts","JeffersonLab_ORG_jana","JeffersonLab_ORG_DEMPgen"]'
 
 jobs:
   check_active_repos:
@@ -80,7 +80,7 @@ jobs:
                 if [[ $(echo "$commit_response" | jq length) -gt 0 ]]; then
                   last_commit_date=$(echo "$commit_response" | jq -r '.[0].commit.committer.date')
                   if [[ "$last_commit_date" > "$CUTOFF_DATE" ]]; then
-                    echo "$ORG_NAME:$repo_name" >> "$TEMP_FILE"  # Append to temp file
+                    echo "${ORG_NAME}_ORG_${repo_name}" >> "$TEMP_FILE"  # Append to temp file
                     echo "Added $repo_name to active repositories"
                   fi
                 else
@@ -128,7 +128,7 @@ jobs:
           echo "" > "$TEMP_V_FILE"
           echo "Checking repository: $repo_name"
 
-          repo_name="${repo_name//:/\/}"  # Replace colons with forward slashes
+          repo_name="${repo_name//_ORG_/\/}"  # Replace colons with forward slashes
 
           # Get tags for the repository
           tags_url="https://api.github.com/repos/$repo_name/tags"
