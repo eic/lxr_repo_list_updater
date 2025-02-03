@@ -152,7 +152,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: tag_list_${{ matrix.repo_name }}.txt
+          name: tag_list_${{ matrix.repo_name }}
           path: "/tmp/tag_list_${{ matrix.repo_name }}.txt"
 
   update_eic_lxr_list:
@@ -169,5 +169,5 @@ jobs:
 
       - name: Combine all tag lists and display
         run: |
-          cat tag_list*
+          cat tag_list*/*
           
