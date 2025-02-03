@@ -37,10 +37,9 @@ jobs:
           # Get list of repositories (with pagination)
           page=1
           TEMP_FILE="/tmp/active_repos.txt"  # Temp file to store active repo names
-          TEMP_V_FILE="/tmp/active_repos_version.txt" # Temp file to store active repo names with release versions matching calver and semver
           # Initialize the temp file
           echo "" > "$TEMP_FILE"
-          echo "" > "$TEMP_V_FILE"
+         
 
           while true; do
             response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL?page=$page&per_page=100")
@@ -115,7 +114,8 @@ jobs:
         id: get_tags_list
         run: |
           repo_name="${{ matrix.repo_name }}"  
-          TEMP_V_FILE="/tmp/${repo_name}.txt"
+          TEMP_V_FILE="/tmp/tag_list_${repo_name}.txt"
+          echo "" > "$TEMP_V_FILE"
           echo "Checking repository: $repo_name"
 
           # Get tags for the repository
