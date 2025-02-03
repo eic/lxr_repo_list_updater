@@ -121,7 +121,7 @@ jobs:
         repo_name: ${{ fromJson(needs.check_active_repos.outputs.active_repos) }}
     steps:
       - name: Get tag list
-        id: get_tags_list
+        id: get_tag_list
         run: |
           repo_name="${{ matrix.repo_name }}"  
           TEMP_V_FILE="/tmp/tag_list_${repo_name}.txt"
@@ -154,4 +154,20 @@ jobs:
         with:
           name: tag_list_${{ matrix.repo_name }}
           path: "/tmp/tag_list_${{ matrix.repo_name }}.txt"
+
+  update_eic_lxr_list:
+    needs: get_tag_list
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+   
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Combine all tag lists and display
+        run: |
+          cat tag_list*
           
