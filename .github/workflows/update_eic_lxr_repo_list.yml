@@ -169,5 +169,8 @@ jobs:
 
       - name: Combine all tag lists and display
         run: |
-          cat tag_list*/*
+          cat tag_list*/* | grep -v '^\s*$' > eic_lxr_list.txt
+
+          cat eic_lxr_list.txt
+          
           
