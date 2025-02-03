@@ -174,7 +174,7 @@ jobs:
 
           # Get branches for the repository
           branches_url="https://api.github.com/repos/$repo_name/branches"
-          branches_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$tags_url")
+          branches_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$branches_url")
 
           # Check if the response is an array
           if echo "$branches_response" | jq -e 'type == "array"' > /dev/null; then
