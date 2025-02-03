@@ -146,6 +146,10 @@ jobs:
           else
             echo "No tags found for repository $repo_name or response format is incorrect."
           fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tag_list_${{ matrix.repo_name//\//_ }}
+          path: "/tmp/tag_list_${{ matrix.repo_name//\//_ }}.txt"
           
-          cat "$TEMP_V_FILE"
-          rm -f "$TEMP_V_FILE"
