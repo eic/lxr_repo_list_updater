@@ -179,7 +179,7 @@ jobs:
           # Check if the response is an array
           if echo "$branches_response" | jq -e 'type == "array"' > /dev/null; then
            # Filter desired branches (main, develop, master)
-           echo "$branches_response" | jq -r '.[] | select(.name == "main" or .name == "develop" or .name == "master") | "https://github.com/'$repo_name'==\(.name)"' > "$TEMP_V_FILE"
+           echo "$branches_response" | jq -r '.[] | select(.name | test("^(main|develop|master)$"; "i")) | "https://github.com/'$repo_name'==\(.name)"' > "$TEMP_V_FILE"
           else
             echo "No branches found for repository $repo_name or response format is incorrect."
           fi
