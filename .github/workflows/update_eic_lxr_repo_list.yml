@@ -114,7 +114,7 @@ jobs:
       - name: Get tag list
         id: get_tags_list
         run: |
-          repo_name="{{ matrix.repo_name }}"  
+          repo_name="${{ matrix.repo_name }}"  
           TEMP_V_FILE="/tmp/${repo_name}.txt"
           echo "Checking repository: $repo_name"
 
