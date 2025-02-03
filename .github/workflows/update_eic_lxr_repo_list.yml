@@ -128,7 +128,7 @@ jobs:
           echo "" > "$TEMP_V_FILE"
           echo "Checking repository: $repo_name"
 
-          repo_name = "${repo_name//:/\/}"  # Replace colons with forward slashes
+          repo_name="${repo_name//:/\/}"  # Replace colons with forward slashes
 
           # Get tags for the repository
           tags_url="https://api.github.com/repos/$repo_name/tags"
