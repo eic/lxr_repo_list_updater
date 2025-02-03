@@ -25,6 +25,7 @@ jobs:
 
       # Step 3: Run the shell script to check active repositories
       - name: Check Active Repositories
+        id: check_active_repos
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
           ORG_NAME: "eic"
