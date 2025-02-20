@@ -101,6 +101,11 @@ https://github.com/eic/HEPMC_Merger==v1.0.2
 https://github.com/eic/HEPMC_Merger==v1.0.1
 https://github.com/eic/HEPMC_Merger==v1.0.0
 https://github.com/eic/JPsiDataSet==lAger3.6.1-1.0
+https://github.com/eic/afterburner==v0.1.2
+https://github.com/eic/afterburner==v0.1.1
+https://github.com/eic/afterburner==v0.1.0
+https://github.com/eic/afterburner==v0.0.2
+https://github.com/eic/afterburner==v0.0.1
 https://github.com/eic/algorithms==v1.0.0
 https://github.com/eic/detector_benchmarks==v0.0.1
 https://github.com/eic/edpm==v1.0.38
