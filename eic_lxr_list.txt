@@ -221,6 +221,7 @@ https://github.com/eic/irt==v1.0.2
 https://github.com/eic/irt==v1.0.2_fixed
 https://github.com/eic/irt==v1.0.1
 https://github.com/eic/irt==v1.0.0
+https://github.com/eic/juggler==v14.3.0
 https://github.com/eic/juggler==v14.2.2
 https://github.com/eic/juggler==v14.2.1
 https://github.com/eic/juggler==v14.2.0
@@ -250,7 +251,6 @@ https://github.com/eic/juggler==v5.0.0
 https://github.com/eic/juggler==v4.4.0
 https://github.com/eic/juggler==v4.3.0
 https://github.com/eic/juggler==v4.2.0
-https://github.com/eic/juggler==v4.1.0
 https://github.com/eic/npsim==v1.4.3
 https://github.com/eic/npsim==v1.4.2
 https://github.com/eic/npsim==v1.4.1
