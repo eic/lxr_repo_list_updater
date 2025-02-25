@@ -8,6 +8,7 @@ https://github.com/JeffersonLab/jana==v0.8.1
 https://github.com/JeffersonLab/jana==v0.8.1b
 https://github.com/JeffersonLab/jana==v0.8.0
 https://github.com/JeffersonLab/jana==0.8.2
+https://github.com/acts-project/acts==v39.2.0
 https://github.com/acts-project/acts==v39.1.0
 https://github.com/acts-project/acts==v39.0.0
 https://github.com/acts-project/acts==v38.2.0
@@ -37,7 +38,6 @@ https://github.com/acts-project/acts==v32.1.0
 https://github.com/acts-project/acts==v32.0.2
 https://github.com/acts-project/acts==v32.0.1
 https://github.com/acts-project/acts==v32.0.0
-https://github.com/acts-project/acts==v31.2.0
 https://github.com/eic/D0Gen==pythia8.306-1.1
 https://github.com/eic/D0Gen==pythia8.306-1.0
 https://github.com/eic/DEMPgen==v1.2.2
