@@ -109,15 +109,6 @@ https://github.com/eic/afterburner==v0.0.2
 https://github.com/eic/afterburner==v0.0.1
 https://github.com/eic/algorithms==v1.0.0
 https://github.com/eic/detector_benchmarks==v0.0.1
-https://github.com/eic/edpm==v1.0.38
-https://github.com/eic/edpm==v1.0.36
-https://github.com/eic/edpm==v1.0.32
-https://github.com/eic/edpm==v1.0.23
-https://github.com/eic/edpm==v1.0.1
-https://github.com/eic/edpm==v1.0.0
-https://github.com/eic/edpm==v0.4.1
-https://github.com/eic/edpm==v0.4.0
-https://github.com/eic/edpm==0.3.11
 https://github.com/eic/eic-smear==1.1.13
 https://github.com/eic/eic-smear==1.1.12
 https://github.com/eic/eic-smear==1.1.11
